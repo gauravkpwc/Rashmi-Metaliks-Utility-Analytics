@@ -59,7 +59,7 @@ card_style = "background-color:#FFE5CC; padding:10px; border-radius:8px; text-al
 col1, col2, col3, col4 = st.columns(4)
 col1.markdown(f"<div style='{card_style}'>⚡ Avg Power (kW)<br>{avg_power:,.1f}</div>", unsafe_allow_html=True)
 col2.markdown(f"<div style='{card_style}'>💨 Avg CFM<br>{avg_cfm:,.1f}</div>", unsafe_allow_html=True)
-col3.markdown(f"<div style='{card_style}'>🔧 Avg kW/CFM<br>{avg_sec:,.1f}</div>", unsafe_allow_html=True)
+col3.markdown(f"<div style='{card_style}'>🔧 Avg kW/CFM<br>{avg_sec:,.3f}</div>", unsafe_allow_html=True)
 col4.markdown(f"<div style='{card_style}'>📊 Std Dev from Rated CFM<br>{std_dev_cfm:,.1f}</div>", unsafe_allow_html=True)
 
 # Main Chart: Compressor SEC Trend
@@ -68,7 +68,7 @@ ax1.plot(df.index, df['SEC_kW_per_CFM'], color='#FD5108', linewidth=2)
 ax1.set_title("Compressor Specific Energy Consumption Trend")
 ax1.set_xlabel("Timestamp")
 ax1.set_ylabel("kW/CFM")
-ax1.set_xticks(df.index[::max(4, len(df)//12)])
+ax1.set_xticks(df.index[::max(1, len(df)//12)])
 ax1.set_xticklabels([ts.strftime('%d %b (%H:%M)') for ts in df.index[::max(1, len(df)//12)]], rotation=45)
 ax1.grid(True, linestyle='--', alpha=0.5)
 st.pyplot(fig1)
@@ -78,6 +78,12 @@ fig1.savefig("compressor_sec_trend.png")
 energy_loss = np.random.normal(loc=50, scale=10, size=data_length)
 df_loss = pd.DataFrame({'Time': time_index, 'Energy_Loss_kWh': energy_loss})
 df_loss.set_index('Time', inplace=True)
+
+# Simulated equipment loss data
+equipment_colors = ['#1f77b4', '#2ca02c', '#9467bd']  # blue, green, purple
+equipment_names = ['Compressor', 'Pump', 'Blower']
+for i, eq in enumerate(equipment_names):
+    df_loss[eq] = np.random.normal(loc=15 + i*5, scale=5, size=data_length)
 
 # Cost Calculations
 unit_cost = 4.2
@@ -92,13 +98,16 @@ col7.markdown(f"<div style='{card_style}'>💰 Total Cost Loss (Rs)<br>{total_co
 
 # Energy Loss Trend Chart
 fig2, ax2 = plt.subplots(figsize=(12, 5))
-ax2.plot(df_loss.index, df_loss['Energy_Loss_kWh'], color='#FF7216', linewidth=2)
+ax2.plot(df_loss.index, df_loss['Energy_Loss_kWh'], color='#4B4B4B', linewidth=2, label='Total Energy Loss')
+for i, eq in enumerate(equipment_names):
+    ax2.plot(df_loss.index, df_loss[eq], color=equipment_colors[i], linestyle='--', linewidth=2, label=f'{eq} Loss')
 ax2.set_title("Energy Loss Trend")
 ax2.set_xlabel("Timestamp")
 ax2.set_ylabel("Energy Loss (kWh)")
 ax2.set_xticks(df_loss.index[::max(1, len(df_loss)//12)])
 ax2.set_xticklabels([ts.strftime('%d %b (%H:%M)') for ts in df_loss.index[::max(1, len(df_loss)//12)]], rotation=45)
 ax2.grid(True, linestyle='--', alpha=0.5)
+ax2.legend()
 st.pyplot(fig2)
 fig2.savefig("energy_loss_trend.png")
 
