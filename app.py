@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 
 # Page configuration
 st.set_page_config(page_title="Compressor Analytics Dashboard", layout="wide")
-st.markdown("<h1 style='text-align: center;'>🔧 Compressor Analytics Dashboard - Rashmi Metaliks</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center;'> Utility Analytics - Rashmi Metaliks</h1>", unsafe_allow_html=True)
 
 # Sidebar filters
 with st.sidebar:
