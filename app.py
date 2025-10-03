@@ -39,20 +39,36 @@ st.pyplot(fig1)
 fig1.savefig("predictive_analytics_flue_gas.png")
 
 # -------------------------------
-# 2. Heat Map: Energy Loss Across Utilities
+# 2. Line Trend: Energy Loss Across Utilities Over Time
 # -------------------------------
-st.header("2. Heat Map: Energy Loss Across Utilities")
+st.header("2. Energy Loss Trend Across Utilities")
 
+# Generate timestamps with 15-minute granularity
+timestamps = pd.date_range(start="2023-01-01 00:00", periods=96, freq="15min")
 utilities = ['Compressor', 'Boiler', 'Rolling Mill', 'Cooling Tower', 'Furnace']
-loss_percent = [12, 18, 25, 10, 20]
-heatmap_data = pd.DataFrame(np.array(loss_percent).reshape(1, -1), columns=utilities)
 
-fig2, ax2 = plt.subplots(figsize=(8, 2))
-sns.heatmap(heatmap_data, annot=True, cmap="OrRd", cbar=False, fmt="d", ax=ax2)
-ax2.set_title("Energy Loss Across Utilities (%)")
-ax2.set_yticks([])
+# Simulate energy loss data
+energy_loss_df = pd.DataFrame({
+    'Timestamp': timestamps,
+    'Compressor': np.random.normal(loc=12, scale=2, size=96),
+    'Boiler': np.random.normal(loc=18, scale=2, size=96),
+    'Rolling Mill': np.random.normal(loc=25, scale=2, size=96),
+    'Cooling Tower': np.random.normal(loc=10, scale=2, size=96),
+    'Furnace': np.random.normal(loc=20, scale=2, size=96),
+})
+
+energy_loss_df['Formatted Time'] = energy_loss_df['Timestamp'].dt.strftime('%d %b (%H:%M)')
+
+fig2, ax2 = plt.subplots(figsize=(10, 5))
+for utility in utilities:
+    ax2.plot(energy_loss_df['Formatted Time'], energy_loss_df[utility], label=utility)
+ax2.set_title("Energy Loss Trend Across Utilities")
+ax2.set_xlabel("Timestamp")
+ax2.set_ylabel("Energy Loss (%)")
+plt.xticks(rotation=45)
+ax2.legend()
 st.pyplot(fig2)
-fig2.savefig("energy_loss_heatmap.png")
+fig2.savefig("energy_loss_trend.png")
 
 # -------------------------------
 # 3. Compressor Efficiency Trend
