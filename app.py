@@ -57,10 +57,10 @@ std_dev_cfm = np.std(df['CFM'] - rated_cfm)
 # KPI Cards
 card_style = "background-color:#FFE5CC; padding:10px; border-radius:8px; text-align:center; font-size:18px; font-weight:bold;"
 col1, col2, col3, col4 = st.columns(4)
-col1.markdown(f"<div style='{card_style}'>⚡ Avg Power (kW)<br>{avg_power:,.1f}</div>", unsafe_allow_html=True)
-col2.markdown(f"<div style='{card_style}'>💨 Avg CFM<br>{avg_cfm:,.1f}</div>", unsafe_allow_html=True)
-col3.markdown(f"<div style='{card_style}'>🔧 Avg kW/CFM<br>{avg_sec:,.3f}</div>", unsafe_allow_html=True)
-col4.markdown(f"<div style='{card_style}'>📊 Std Dev from Rated CFM<br>{std_dev_cfm:,.1f}</div>", unsafe_allow_html=True)
+col1.markdown(f"<div style='{card_style}'>Avg Power (kW)<br>{avg_power:,.1f}</div>", unsafe_allow_html=True)
+col2.markdown(f"<div style='{card_style}'>Avg CFM<br>{avg_cfm:,.1f}</div>", unsafe_allow_html=True)
+col3.markdown(f"<div style='{card_style}'>Avg kW/CFM<br>{avg_sec:,.3f}</div>", unsafe_allow_html=True)
+col4.markdown(f"<div style='{card_style}'>Std Dev from Rated CFM<br>{std_dev_cfm:,.1f}</div>", unsafe_allow_html=True)
 
 # Main Chart: Compressor SEC Trend
 fig1, ax1 = plt.subplots(figsize=(12, 5))
@@ -92,9 +92,9 @@ avg_loss_kWh = df_loss['Energy_Loss_kWh'].mean()
 total_cost_loss = total_loss_kWh * unit_cost
 
 col5, col6, col7 = st.columns(3)
-col5.markdown(f"<div style='{card_style}'>🔋 Total Energy Loss (kWh)<br>{total_loss_kWh:,.1f}</div>", unsafe_allow_html=True)
-col6.markdown(f"<div style='{card_style}'>📉 Avg Energy Loss (kWh)<br>{avg_loss_kWh:,.1f}</div>", unsafe_allow_html=True)
-col7.markdown(f"<div style='{card_style}'>💰 Total Cost Loss (Rs)<br>{total_cost_loss:,.1f}</div>", unsafe_allow_html=True)
+col5.markdown(f"<div style='{card_style}'>Total Energy Loss (kWh)<br>{total_loss_kWh:,.1f}</div>", unsafe_allow_html=True)
+col6.markdown(f"<div style='{card_style}'>Avg Energy Loss (kWh)<br>{avg_loss_kWh:,.1f}</div>", unsafe_allow_html=True)
+col7.markdown(f"<div style='{card_style}'>Total Cost Loss (Rs)<br>{total_cost_loss:,.1f}</div>", unsafe_allow_html=True)
 
 # Energy Loss Trend Chart
 fig2, ax2 = plt.subplots(figsize=(12, 5))
